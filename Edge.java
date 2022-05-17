@@ -9,8 +9,7 @@ public class Edge <V,E> {
     protected boolean visited;
     protected boolean directed;
 
-    public Edge(V vtx1, V vtx2, E label,
-    boolean directed)
+    public Edge(V vtx1, V vtx2, E label, boolean directed)
     // post: edge associates vtx1 and vtx2; labeled with label
     //directed if "directed" set true
     {
@@ -18,6 +17,11 @@ public class Edge <V,E> {
         this.vertex2 = vtx2;
         this.label = label;
         this.directed = directed;
+    }
+    public Edge(V vtx1, V vtx2, E label) {
+        this.vertex1 = vtx1;
+        this.vertex2 = vtx2;
+        this.label = label;
     }
     public V here()
     // post: returns first node in edge
@@ -67,5 +71,9 @@ public class Edge <V,E> {
         return 
             (here() == e.here() && there() == e.there()) ? true :
             (!directed && here() == e.there() && there() == e.here()) ? true : false;
+    }
+
+    public boolean hasVertex (V vertex) {
+        return vertex == vertex1 || vertex == vertex2;
     }
 }
