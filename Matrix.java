@@ -5,19 +5,21 @@ public class Matrix<E> {
     protected int size = 0;
 
     public Matrix (int size) {
-        this.size = size;
         matrix = new ArrayList<>(size);
-        for (int i = 0; i < size; i++) {
-            matrix.set(i, new ArrayList<>(size));
+        while (this.size < size) {
+            incrementSize();
         }
     }
     
-    public void incrementSize () {
+    private void incrementSize () {
         this.size++;
+        ArrayList<E> newRow = new ArrayList<>(size);
         for (ArrayList<E> row : matrix) {
             row.add(null);
+            newRow.add(null);
         }
-        matrix.add(new ArrayList<>(size));
+        newRow.add(null);
+        matrix.add(newRow);
     }
     
     public E get(int index1, int index2) {

@@ -19,23 +19,22 @@ public class FloydMatrixGraph {
             for (int i = 0; i < vertices.size(); i++) {
                 String iVertex = vertices.get(i);
                 for (int j = 0; j < vertices.size(); j++) {
-                    String jVertex = vertices.get(i);
+                    String jVertex = vertices.get(j);
+
+                    ArrayList<Edge<String,Integer>> edgelist1 = new ArrayList<>();
 
                     if (i == j) {
-                        this.relaciones.get(i, j).add(
-                                new Edge<String, Integer>(iVertex, jVertex, 0));
-                        this.relaciones.get(j, i).add(
-                                new Edge<String, Integer>(jVertex, iVertex, 0));
+                        edgelist1.add(new Edge<String,Integer>(iVertex, jVertex, 0));
+                        this.relaciones.set(i, j, edgelist1);
+                        continue;
                     }
 
                     if (edge.hasVertex(iVertex) && edge.hasVertex(jVertex)) {
-                        this.relaciones.get(i, j).add(edge);
-                        this.relaciones.get(j, i).add(edge);
+                        edgelist1.add(edge);
+                        this.relaciones.set(i, j, edgelist1);
                     } else {
-                        this.relaciones.get(i, j).add(
-                                new Edge<String, Integer>(iVertex, jVertex, Integer.MAX_VALUE));
-                        this.relaciones.get(j, i).add(
-                                new Edge<String, Integer>(jVertex, iVertex, Integer.MAX_VALUE));
+                        edgelist1.add(new Edge<String, Integer>(iVertex, jVertex, Integer.MAX_VALUE));
+                        this.relaciones.set(i, j, edgelist1);
                     }
                 }
             }
@@ -53,7 +52,7 @@ public class FloydMatrixGraph {
                         continue;
                     }
 
-                    if (edgeListValue(relaciones.get(i, j)) > (edgeListValue(first) + edgeListValue(last))) {
+                    if (edgeListValue(relaciones.get(i, j)) < (edgeListValue(first) + edgeListValue(last))) {
                         first.addAll(last);
                         relaciones.set(i, j, first);
                     }
@@ -76,6 +75,9 @@ public class FloydMatrixGraph {
 
     public String graphCenter() {
         ArrayList<Integer> maxValues = new ArrayList<>(relaciones.size());
+        for (int index = 0; index < relaciones.size(); index++) {
+            maxValues.add(0);
+        }
         for (int i = 0; i < relaciones.size(); i++) {
             for (int j = 0; j < relaciones.size(); j++) {
                 int value = edgeListValue(relaciones.get(i, j));
@@ -110,9 +112,10 @@ public class FloydMatrixGraph {
 
         Edge<String, Integer> newEdge = new Edge<String, Integer>(vtx1, vtx2, label);
         relacionesInit.add(newEdge);
+        update();
     }
 
-    public void removeEdge(String vtx1, String vtx2) {
+    public boolean removeEdge(String vtx1, String vtx2) {
         if (!vertices.contains(vtx1)) {
             vertices.remove(vtx1);
         }
@@ -123,12 +126,14 @@ public class FloydMatrixGraph {
         for (int i = 0; i < relacionesInit.size(); i++) {
             if (relacionesInit.get(i).hasVertex(vtx1) && relacionesInit.get(i).hasVertex(vtx2)) {
                 relacionesInit.remove(i);
-                return;
+                return true;
             }
         } 
+        update();
+        return false;
     }
 
-    public void update() {
+    private void update() {
         createMatrix();
         floyd();
     }

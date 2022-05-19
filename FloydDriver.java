@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class FloydDriver {
 
-    FloydMatrixGraph floydMatrixGraph;
+    FloydMatrixGraph floydMG;
     FileReader fileReader;
     Vista vista;
 
@@ -10,7 +10,8 @@ public class FloydDriver {
         fileReader = new FileReader();
         fileReader.read();
 
-        floydMatrixGraph = new FloydMatrixGraph(fileReader.getVertices(), fileReader.getRelacionesInit());
+        floydMG = new FloydMatrixGraph(fileReader.getVertices(), fileReader.getRelacionesInit());
+        vista = new Vista();
     }
 
     public void menu() {
@@ -20,25 +21,25 @@ public class FloydDriver {
             switch (option) {
                 case "1":
                     String[] ruta = vista.encontrarCiudad();
-                    ArrayList<Edge<String,Integer>> route = floydMatrixGraph.getEdgeList(ruta[0], ruta[1]);
-                    int routeValue = floydMatrixGraph.edgeListValue(route);
+                    ArrayList<Edge<String,Integer>> route = floydMG.getEdgeList(ruta[0], ruta[1]);
+                    int routeValue = floydMG.edgeListValue(route);
                     vista.printRoute(route, routeValue);
                     break;
                 
                 case "2":
-                    vista.printCenter(floydMatrixGraph.graphCenter());
+                    vista.printCenter(floydMG.graphCenter());
                     break;
 
                 case "3":
                     switch (vista.modifyGraph()) {
                         case "1":
                             String[] eliminar= vista.removeConection();
-                            floydMatrixGraph.removeEdge(eliminar[0], eliminar[1]);
+                            floydMG.removeEdge(eliminar[0], eliminar[1]);
                             break;
 
                         case "2":
                             String[] agregar = vista.addConection();
-                            floydMatrixGraph.addEdge(agregar[0], agregar[1], Integer.parseInt(agregar[2]));
+                            floydMG.addEdge(agregar[0], agregar[1], Integer.parseInt(agregar[2]));
                             break;
                     
                         default:
@@ -47,8 +48,10 @@ public class FloydDriver {
                     break;
                 case "4":
                     active = false;
+                    break;
             
                 default:
+                    vista.invalidInput();
                     break;
             }
         }

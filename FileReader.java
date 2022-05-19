@@ -14,13 +14,18 @@ public class FileReader {
     protected ArrayList<Edge<String,Integer>> relacionesInit;
     protected ArrayList<String> vertices;
 
+    public FileReader () {
+        relacionesInit = new ArrayList<>();
+        vertices = new ArrayList<>();
+    }
+
     /**
      * Metodo que almacena las lineas del documento.
      * @return ArrayList con las lineas del documento.
      */
     public void read(){
         try{
-            String nombre= "datos.txt";
+            String nombre= "guategrafo.txt";
             File myFile = new File(nombre);
             Scanner s = new Scanner(myFile);
             String linea = "";

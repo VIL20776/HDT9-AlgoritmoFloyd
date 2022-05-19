@@ -38,7 +38,7 @@ public class Vista {
     }
 
     public void printCenter(String center) {
-        System.out.println("La ciudad central es" + center);
+        System.out.println("La ciudad central es: " + center);
     }
 
     public String modifyGraph () {
@@ -73,5 +73,17 @@ public class Vista {
         vertices[2] = scan.nextLine();  
 
         return vertices;
+    }
+
+    public void removeStatus(boolean status) {
+        if(status) { 
+            System.out.println("Se ha eliminado la conexion");
+        } else {
+            System.out.println("Error: no existe la conexion");
+        }
+    }
+
+    public void invalidInput() {
+        System.out.println("Se ha ingresado un comando invalido.");
     }
 }
